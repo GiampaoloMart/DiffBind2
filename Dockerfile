@@ -7,9 +7,10 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Esegui i comandi apt-get come utente root
 USER root
 
-# Aggiorna i pacchetti di sistema e installa le dipendenze necessarie
+# Aggiorna i pacchetti di sistema e installa libicu66
 RUN apt-get update && \
     apt-get install -y \
+    libicu66 \
     libcurl4-openssl-dev \
     libssl-dev \
     libxml2-dev \
@@ -21,15 +22,9 @@ RUN apt-get update && \
     libpq-dev \
     libfontconfig1-dev \
     git \
-    patch \
-    libicu-dev && \
+    patch && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
-
-# Crea un symlink per libicui18n.so.66 se non disponibile
-RUN if [ ! -f /usr/lib/x86_64-linux-gnu/libicui18n.so.66 ]; then \
-        ln -s /usr/lib/x86_64-linux-gnu/libicu*.so /usr/lib/x86_64-linux-gnu/libicui18n.so.66; \
-    fi
 
 # Installa BiocManager per gestire i pacchetti Bioconductor
 RUN R -e "if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages('BiocManager')"
