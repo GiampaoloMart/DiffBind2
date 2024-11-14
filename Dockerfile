@@ -35,15 +35,11 @@ RUN if [ -f /usr/lib/x86_64-linux-gnu/libicui18n.so.70 ]; then \
 RUN R -e "if (!requireNamespace('BiocManager', quietly = TRUE)) install.packages('BiocManager')"
 
 # Installa i pacchetti CRAN e Bioconductor richiesti
-RUN R -e "install.packages(c('stringr', 'ggforce', 'Glimma'))" && \
-    R -e "BiocManager::install(c('sva', 'org.Mm.eg.db', 'org.Hs.eg.db', 'GenomicFeatures', 'txdbmaker', 'TxDb.Hsapiens.UCSC.hg38.knownGene', 'TxDb.Mmusculus.UCSC.mm10.knownGene'))"
+RUN R -e "install.packages(c('stringr', 'ggforce'))" && \
+    R -e "BiocManager::install(c('Glimma','sva', 'org.Mm.eg.db', 'org.Hs.eg.db', 'GenomicFeatures', 'txdbmaker', 'TxDb.Hsapiens.UCSC.hg38.knownGene', 'TxDb.Mmusculus.UCSC.mm10.knownGene'))"
 
-# Configura un utente per l'accesso a RStudio
-RUN useradd -m -s /bin/bash rstudio_user && \
-    echo "rstudio_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
-
-# Assegna la proprietà della directory all'utente rstudio_user
-RUN chown -R rstudio_user:rstudio_user /home/rstudio_user
+# Imposta i permessi per rstudio_user
+RUN echo "rstudio_user ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Espone la porta 8787 per l'accesso a RStudio Server
 EXPOSE 8787
