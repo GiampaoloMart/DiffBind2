@@ -4,6 +4,9 @@ FROM ghcr.io/giampaolomart/diffbindv1:nightly
 # Imposta la variabile per evitare richieste interattive
 ENV DEBIAN_FRONTEND=noninteractive
 
+# Esegui i comandi apt-get come utente root
+USER root
+
 # Aggiorna i pacchetti di sistema e installa le dipendenze necessarie
 RUN apt-get update && \
     apt-get install -y \
