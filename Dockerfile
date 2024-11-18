@@ -7,9 +7,12 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Esegui i comandi apt-get come utente root
 USER root
 
-# Aggiorna i pacchetti e installa libicu66 per risolvere il problema della libreria mancante
+# Scarica e installa libicu66 manualmente
 RUN apt-get update && \
-    apt-get install -y libicu66 && \
+    apt-get install -y wget && \
+    wget http://archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu66_66.1-2ubuntu2_amd64.deb && \
+    dpkg -i libicu66_66.1-2ubuntu2_amd64.deb && \
+    rm libicu66_66.1-2ubuntu2_amd64.deb && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
